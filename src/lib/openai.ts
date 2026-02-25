@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
-// Using gpt-4o-mini as a fast, lightweight alternative to "ChatGPT Nano" (which isn't a standard API model)
-export const MODEL = "gpt-4o-mini";
+// Using gpt-5-nano as the default model
+export const MODEL = "gpt-5-nano";
 
 export interface PromptConfig {
   id: string;
