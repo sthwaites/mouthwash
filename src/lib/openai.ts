@@ -60,6 +60,21 @@ export async function processText(
     return completion.choices[0]?.message?.content || "";
   } catch (error) {
     console.error("OpenAI API Error:", error);
+
+    if (error instanceof OpenAI.APIError) {
+      switch (error.status) {
+        case 401:
+          throw new Error("Invalid API Key. Please check your settings.");
+        case 429:
+          throw new Error("Rate limit exceeded or insufficient quota. Please check your OpenAI plan.");
+        case 500:
+        case 503:
+          throw new Error("OpenAI service is currently unavailable. Please try again later.");
+        default:
+          throw new Error(`OpenAI Error: ${error.message}`);
+      }
+    }
+
     throw error;
   }
 }
