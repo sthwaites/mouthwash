@@ -8,6 +8,7 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 - **💼 Business Polish**: Rewrites casual or fragmented speech into professional business English, removing colloquialisms and improving clarity.
 - **🤖 Prompt Mode**: Converts rambling instructions into high-quality, structured prompts optimized for AI models like ChatGPT, Claude, and Gemini.
 - **🎙️ Voice Recording**: Record your thoughts directly in the browser using OpenAI's Whisper model for accurate speech-to-text transcription.
+- **🧠 Model Selection**: Choose between multiple OpenAI models (GPT-4o, GPT-4o-mini, GPT-3.5-turbo) to balance speed, cost, and intelligence.
 - **🔒 Privacy First**: Your OpenAI API key is stored locally in your browser (LocalStorage) and never sent to our servers. All processing happens directly between your browser and OpenAI.
 - **⚡ Blazing Fast**: Built with React + Vite for instant load times and responsive interactions.
 - **🌗 Theme Support**: Choose between Light, Dark, or System Sync modes for a comfortable viewing experience in any environment.
@@ -18,7 +19,7 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 - **Frontend**: React 19, TypeScript, Vite
 - **Styling**: Tailwind CSS v4
 - **Icons**: Lucide React
-- **AI Integration**: OpenAI API (GPT-4o-mini & Whisper)
+- **AI Integration**: OpenAI API (Support for GPT-4o, GPT-4o-mini, GPT-3.5-turbo & Whisper)
 - **State Management**: React Hooks + LocalStorage
 - **Containerization**: Docker, Docker Compose, Nginx
 
