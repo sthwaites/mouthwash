@@ -46,7 +46,7 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({ value, autoCopy, t
       <textarea
         readOnly
         value={value}
-        className="w-full h-40 bg-gray-900 text-gray-300 border border-gray-800 rounded-lg p-4 resize-none focus:outline-none cursor-default"
+        className="w-full h-full bg-gray-950 text-gray-300 border border-gray-800 hover:border-gray-700 rounded-lg p-4 resize-none focus:outline-none focus:border-blue-500/50 cursor-default transition-all"
         placeholder="Processed text will appear here..."
       />
     </div>
