@@ -177,11 +177,11 @@ function App() {
           </button>
         </header>
 
-        <div className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700/50 space-y-6 flex flex-col h-[calc(100vh-140px)] md:h-auto overflow-hidden transition-colors duration-200">
+        <div className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700/50 space-y-6 flex flex-col transition-colors duration-200">
           
-          <div className="grid md:grid-cols-2 gap-6 h-full overflow-y-auto md:overflow-visible pr-1">
+          <div className="grid md:grid-cols-2 gap-6 pr-1">
             {/* Input Section */}
-            <div className="space-y-2 flex flex-col h-full">
+            <div className="space-y-2 flex flex-col">
               <div className="flex justify-between items-end">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Input
@@ -204,7 +204,7 @@ function App() {
                   )}
                 </div>
               </div>
-              <div className="flex-grow">
+              <div>
                  <TextInput
                   value={inputText}
                   onChange={setInputText}
@@ -215,14 +215,14 @@ function App() {
 
 
             {/* Output Section */}
-            <div className="space-y-2 flex flex-col h-full relative">
+            <div className="space-y-2 flex flex-col relative">
               <div className="flex justify-between items-end">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Output
                 </label>
               </div>
               
-              <div className="relative flex-grow">
+              <div className="relative">
                 <OutputDisplay 
                   value={outputText} 
                   autoCopy={autoCopy} 
@@ -254,7 +254,7 @@ function App() {
             </div>
           )}
 
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700/30 flex flex-col items-center gap-4 mt-auto">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700/30 flex flex-col items-center gap-4">
             <ActionButtons
               prompts={prompts}
               onProcess={handleProcess}

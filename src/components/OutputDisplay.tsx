@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Clipboard, Check } from 'lucide-react';
 import { Tooltip } from './Tooltip';
+import { useAutoResize } from '../hooks/useAutoResize';
 
 interface OutputDisplayProps {
   value: string;
@@ -30,6 +31,10 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
   setRearrange
 }) => {
   const [copied, setCopied] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Apply auto-resize hook
+  useAutoResize(textareaRef, value);
 
   const handleCopy = () => {
     if (value) {
@@ -41,7 +46,7 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
 
   return (
     <div className="flex flex-col space-y-2 h-full">
-      <div className="flex flex-col gap-2 mb-2">
+      <div className="flex flex-col gap-2 mb-2 flex-shrink-0">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap gap-4">
             <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
@@ -112,9 +117,10 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
         </div>
       </div>
       <textarea
+        ref={textareaRef}
         readOnly
         value={value}
-        className="w-full h-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-lg p-4 resize-none focus:outline-none focus:border-blue-500/50 cursor-default transition-all"
+        className="w-full min-h-[240px] max-h-[60vh] overflow-y-auto bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-lg p-4 resize-none focus:outline-none focus:border-blue-500/50 cursor-default transition-all"
         placeholder="Processed text will appear here..."
       />
     </div>
