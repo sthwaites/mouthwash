@@ -11,7 +11,14 @@ describe('App', () => {
 
   it('renders the input textarea', () => {
     render(<App />);
-    const input = screen.getByPlaceholderText(/Paste your transcribed text here.../i);
+    const input = screen.getByPlaceholderText(/Paste your transcribed text here/i);
     expect(input).toBeInTheDocument();
   });
+
+  it('renders the audio recorder button', () => {
+    render(<App />);
+    const recorderButton = screen.getByTitle(/Start Recording/i);
+    expect(recorderButton).toBeInTheDocument();
+  });
 });
+

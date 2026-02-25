@@ -104,6 +104,35 @@ export async function processText(
   }
 }
 
+export async function transcribeAudio(
+  audioFile: File,
+  apiKey: string
+): Promise<string> {
+  if (!apiKey) {
+    throw new Error("API Key is required");
+  }
+
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    dangerouslyAllowBrowser: true,
+  });
+
+  try {
+    const transcription = await openai.audio.transcriptions.create({
+      file: audioFile,
+      model: "whisper-1",
+    });
+
+    return transcription.text;
+  } catch (error) {
+    console.error("OpenAI Audio Error:", error);
+    if (error instanceof OpenAI.APIError) {
+      throw new Error(`OpenAI Audio Error: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
 export interface ValidationResult {
   isValid: boolean;
   message?: string;

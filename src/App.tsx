@@ -6,6 +6,7 @@ import { TextInput } from "./components/TextInput";
 import { ActionButtons } from "./components/ActionButtons";
 import { OutputDisplay } from "./components/OutputDisplay";
 import { SettingsModal } from "./components/SettingsModal";
+import { AudioRecorder } from "./components/AudioRecorder";
 import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle } from "lucide-react";
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
   const [applyPrefix, setApplyPrefix] = useLocalStorage<boolean>("apply_prefix", true);
   const [applySuffix, setApplySuffix] = useLocalStorage<boolean>("apply_suffix", true);
   const [autoCopy, setAutoCopy] = useLocalStorage<boolean>("auto_copy", false);
+  const [recordingShortcut, setRecordingShortcut] = useLocalStorage<string>("recording_shortcut", "Control+Space");
+  const [recordingMode, setRecordingMode] = useLocalStorage<"toggle" | "hold">("recording_mode", "toggle");
 
   const { theme, setTheme } = useTheme();
 
@@ -75,6 +78,10 @@ function App() {
     }
   };
 
+  const handleTranscriptionComplete = (text: string) => {
+    setInputText((prev) => (prev ? prev + "\n" + text : text));
+  };
+
   const clearText = () => {
     setInputText("");
     setOutputText("");
@@ -102,6 +109,10 @@ function App() {
           setTheme={setTheme}
           validationStatus={validationStatus}
           validationMessage={validationMessage}
+          recordingShortcut={recordingShortcut}
+          setRecordingShortcut={setRecordingShortcut}
+          recordingMode={recordingMode}
+          setRecordingMode={setRecordingMode}
         />
       )}
 
@@ -158,23 +169,33 @@ function App() {
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Input
                 </label>
-                {inputText && (
-                  <button
-                    onClick={clearText}
-                    className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/10"
-                  >
-                    Clear
-                  </button>
-                )}
+                <div className="flex items-center gap-2">
+                  <AudioRecorder 
+                    apiKey={apiKey}
+                    onTranscriptionComplete={handleTranscriptionComplete}
+                    shortcut={recordingShortcut}
+                    mode={recordingMode}
+                    disabled={!apiKey}
+                  />
+                  {inputText && (
+                    <button
+                      onClick={clearText}
+                      className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/10"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="flex-grow">
                  <TextInput
                   value={inputText}
                   onChange={setInputText}
-                  placeholder="Paste your transcribed text here..."
+                  placeholder="Paste your transcribed text here, or record audio..."
                 />
               </div>
             </div>
+
 
             {/* Output Section */}
             <div className="space-y-2 flex flex-col h-full relative">

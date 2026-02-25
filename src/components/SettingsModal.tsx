@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { X, Plus, Trash2, Save, Undo, Key, Sun, Moon, Monitor, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { type PromptConfig, DEFAULT_PROMPTS, type AIModel, AVAILABLE_MODELS } from "../lib/openai";
 import type { Theme } from "../hooks/useTheme";
+import { RecordingSettings } from "./RecordingSettings";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -20,6 +21,10 @@ interface SettingsModalProps {
   setTheme: (theme: Theme) => void;
   validationStatus: 'idle' | 'validating' | 'valid' | 'invalid';
   validationMessage: string | null;
+  recordingShortcut: string;
+  setRecordingShortcut: (shortcut: string) => void;
+  recordingMode: "toggle" | "hold";
+  setRecordingMode: (mode: "toggle" | "hold") => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -39,6 +44,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   setTheme,
   validationStatus,
   validationMessage,
+  recordingShortcut,
+  setRecordingShortcut,
+  recordingMode,
+  setRecordingMode,
 }) => {
   const [localPrompts, setLocalPrompts] = useState<PromptConfig[]>(prompts);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -197,6 +206,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </p>
             </div>
           </section>
+
+          {/* Recording Settings */}
+          <RecordingSettings
+            shortcut={recordingShortcut}
+            setShortcut={setRecordingShortcut}
+            mode={recordingMode}
+            setMode={setRecordingMode}
+          />
 
           {/* Model Selection */}
           <section className="space-y-4">
