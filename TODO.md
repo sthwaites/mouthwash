@@ -31,4 +31,4 @@
 - [ ] **File Upload**: Allow users to upload `.txt` or `.md` files.
 - [ ] **Model Selection**: Allow users to choose between `gpt-4o`, `gpt-4o-mini`, or `gpt-3.5-turbo`.
 - [ ] **Voice Input**: Integrate browser Speech-to-Text API.
-- [ ] **Testing**: Set up Vitest/Playwright.
+- [x] **Testing**: Set up Vitest/Playwright.

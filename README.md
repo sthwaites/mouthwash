@@ -33,8 +33,8 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/voice-cleanup.git
-    cd voice-cleanup
+    git clone https://github.com/yourusername/mouthwash.git
+    cd mouthwash
     ```
 
 2.  **Install dependencies:**
@@ -83,7 +83,7 @@ Run the application in a lightweight container using Docker Compose:
 ## Project Structure
 
 ```
-voice-cleanup/
+mouthwash/
 ├── public/              # Static assets
 ├── src/
 │   ├── components/      # Reusable UI components (ApiKeyInput, TextInput, etc.)
@@ -94,7 +94,7 @@ voice-cleanup/
 ├── Dockerfile           # Multi-stage Docker build config
 ├── docker-compose.yml   # Docker Compose orchestration
 ├── nginx.conf           # Nginx configuration for serving SPA
-└── tailwind.config.js   # Tailwind CSS configuration
+└── vite.config.ts       # Vite configuration
 ```
 
 ## Contributing
