@@ -29,6 +29,6 @@
 
 - [ ] **History Tab**: Store the last 5-10 processed items locally.
 - [ ] **File Upload**: Allow users to upload `.txt` or `.md` files.
-- [ ] **Model Selection**: Allow users to choose between `gpt-4o`, `gpt-4o-mini`, or `gpt-3.5-turbo`.
-- [ ] **Voice Input**: Integrate browser Speech-to-Text API.
+- [x] **Model Selection**: Allow users to choose between `gpt-4o`, `gpt-4o-mini`, or `gpt-3.5-turbo`.
+- [x] **Voice Input**: Integrate browser Speech-to-Text API.
 - [x] **Testing**: Set up Vitest/Playwright.
