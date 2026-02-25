@@ -22,8 +22,8 @@
 
 ## 🛠️ Engineering
 
-- [ ] **Error Handling**: Enhance user feedback for specific API errors.
-- [ ] **Persist Settings**: Save the last used "Mode" and all custom prompts in local storage.
+- [x] **Persist Settings**: Custom prompts, prefix/suffix, and auto-copy settings are saved in local storage.
+- [ ] **Error Handling**: Enhance user feedback for specific API errors (e.g., distinguishing rate limits from auth errors).
 
 ## 🔮 Future Features
 
