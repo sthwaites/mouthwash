@@ -1,6 +1,6 @@
-# AI Agent Operational Guide: Voice Cleanup
+# AI Agent Operational Guide: Mouthwash
 
-This document outlines the operational protocols, coding standards, and architectural patterns for AI agents working within the `voice-cleanup` repository.
+This document outlines the operational protocols, coding standards, and architectural patterns for AI agents working within the `mouthwash` repository.
 
 ## 1. Project Architecture & Tech Stack
 

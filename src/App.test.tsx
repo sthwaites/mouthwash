@@ -5,7 +5,7 @@ import App from './App';
 describe('App', () => {
   it('renders the main title', () => {
     render(<App />);
-    const title = screen.getByText(/Voice Cleanup/i);
+    const title = screen.getByText(/Mouthwash/i);
     expect(title).toBeInTheDocument();
   });
 

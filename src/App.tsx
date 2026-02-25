@@ -127,7 +127,7 @@ function App() {
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500">
-                  Voice Cleanup
+                  Mouthwash
                 </h1>
                 <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-[10px] font-mono text-gray-600 dark:text-gray-400">
                   <Cpu className="w-3 h-3" />

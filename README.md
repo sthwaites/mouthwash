@@ -1,4 +1,4 @@
-# Voice Cleanup App
+# Mouthwash
 
 A modern, privacy-focused web application for cleaning up, polishing, and optimizing transcribed voice notes. Transform messy voice-to-text output into clear, professional communication or structured AI prompts with a single click.
 
