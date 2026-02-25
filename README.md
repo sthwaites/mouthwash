@@ -1,73 +1,106 @@
-# React + TypeScript + Vite
+# Voice Cleanup App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, privacy-focused web application for cleaning up, polishing, and optimizing transcribed voice notes. Transform messy voice-to-text output into clear, professional communication or structured AI prompts with a single click.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **🗣️ Cleanup Mode**: Intelligently removes filler words (um, ah, like), hesitations, and stutters while preserving the original meaning and word choice.
+- **💼 Business Polish**: Rewrites casual or fragmented speech into professional business English, removing colloquialisms and improving clarity.
+- **🤖 Prompt Mode**: Converts rambling instructions into high-quality, structured prompts optimized for AI models like ChatGPT, Claude, and Gemini.
+- **🔒 Privacy First**: Your OpenAI API key is stored locally in your browser (LocalStorage) and never sent to our servers. All processing happens directly between your browser and OpenAI.
+- **⚡ Blazing Fast**: Built with React + Vite for instant load times and responsive interactions.
+- **🌙 Dark Mode**: Beautiful, eye-friendly dark interface powered by Tailwind CSS.
+- **📋 Auto-Copy**: Optional setting to automatically copy processed text to your clipboard.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Tailwind CSS v4
+- **Icons**: Lucide React
+- **AI Integration**: OpenAI API (GPT-4o-mini)
+- **State Management**: React Hooks + LocalStorage
+- **Containerization**: Docker, Docker Compose, Nginx
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (v18 or higher)
+- npm or yarn
+- OpenAI API Key
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Local Development
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/voice-cleanup.git
+    cd voice-cleanup
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open the app:**
+    Visit `http://localhost:5173` in your browser.
+
+5.  **Enter API Key:**
+    Enter your OpenAI API key in the configuration panel at the top.
+
+### Production Build
+
+To build the app for production:
+
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The output will be in the `dist/` directory, ready to be served by any static file server.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Docker Deployment
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Run the application in a lightweight container using Docker Compose:
+
+1.  **Build and start:**
+    ```bash
+    docker-compose up -d --build
+    ```
+
+2.  **Access the app:**
+    Visit `http://localhost:8080`
+
+3.  **Stop:**
+    ```bash
+    docker-compose down
+    ```
+
+## Project Structure
+
 ```
+voice-cleanup/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components (ApiKeyInput, TextInput, etc.)
+│   ├── hooks/           # Custom React hooks (useLocalStorage)
+│   ├── lib/             # Utilities and API logic (openai.ts)
+│   ├── App.tsx          # Main application component
+│   └── main.tsx         # Entry point
+├── Dockerfile           # Multi-stage Docker build config
+├── docker-compose.yml   # Docker Compose orchestration
+├── nginx.conf           # Nginx configuration for serving SPA
+└── tailwind.config.js   # Tailwind CSS configuration
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
