@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Clipboard, Check } from 'lucide-react';
+import { Tooltip } from './Tooltip';
 
 interface OutputDisplayProps {
   value: string;
@@ -50,7 +51,9 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
                 onChange={toggleAutoCopy}
                 className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
               />
-              <span>Auto-copy</span>
+              <Tooltip content="Auto-copies output to clipboard.">
+                <span>Auto-copy</span>
+              </Tooltip>
             </label>
 
             <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
@@ -60,7 +63,9 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
                 onChange={(e) => setRearrange(e.target.checked)}
                 className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
               />
-              <span>Rework</span>
+              <Tooltip content="Rearranges text for better impact.">
+                <span>Rework</span>
+              </Tooltip>
             </label>
 
             {customPrefix && (
@@ -71,7 +76,9 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
                   onChange={(e) => setApplyPrefix(e.target.checked)}
                   className="form-checkbox h-4 w-4 text-purple-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
                 />
-                <span className="truncate max-w-[150px]" title={`Prefix: ${customPrefix}`}>+ Prefix</span>
+                <Tooltip content="Prepends custom text. (Configurable in Settings)">
+                  <span className="truncate max-w-[150px]" title={`Prefix: ${customPrefix}`}>+ Prefix</span>
+                </Tooltip>
               </label>
             )}
 
@@ -83,7 +90,9 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
                   onChange={(e) => setApplySuffix(e.target.checked)}
                   className="form-checkbox h-4 w-4 text-purple-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
                 />
-                <span className="truncate max-w-[150px]" title={`Suffix: ${customSuffix}`}>+ Suffix</span>
+                <Tooltip content="Appends custom text. (Configurable in Settings)">
+                  <span className="truncate max-w-[150px]" title={`Suffix: ${customSuffix}`}>+ Suffix</span>
+                </Tooltip>
               </label>
             )}
           </div>
