@@ -23,7 +23,7 @@
 ## 🛠️ Engineering
 
 - [x] **Persist Settings**: Custom prompts, prefix/suffix, and auto-copy settings are saved in local storage.
-- [ ] **Error Handling**: Enhance user feedback for specific API errors (e.g., distinguishing rate limits from auth errors).
+- [x] **Error Handling**: Enhance user feedback for specific API errors (e.g., distinguishing rate limits from auth errors).
 
 ## 🔮 Future Features
 

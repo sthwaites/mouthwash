@@ -9,7 +9,7 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 - **🤖 Prompt Mode**: Converts rambling instructions into high-quality, structured prompts optimized for AI models like ChatGPT, Claude, and Gemini.
 - **🔒 Privacy First**: Your OpenAI API key is stored locally in your browser (LocalStorage) and never sent to our servers. All processing happens directly between your browser and OpenAI.
 - **⚡ Blazing Fast**: Built with React + Vite for instant load times and responsive interactions.
-- **🌙 Dark Mode**: Beautiful, eye-friendly dark interface powered by Tailwind CSS.
+- **🌗 Theme Support**: Choose between Light, Dark, or System Sync modes for a comfortable viewing experience in any environment.
 - **📋 Auto-Copy**: Optional setting to automatically copy processed text to your clipboard.
 
 ## Tech Stack

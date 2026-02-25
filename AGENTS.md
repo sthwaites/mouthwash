@@ -49,8 +49,13 @@ This document outlines the operational protocols, coding standards, and architec
   *Uses ESLint with TypeScript and React hooks plugins.*
 
 ### Testing
-*Currently, no test runner (Vitest/Jest) is configured for this project.*
-If tests are added in the future, standard Vite patterns suggest using **Vitest**.
+- **Framework**: Vitest + React Testing Library.
+- **Run Tests**:
+  ```bash
+  npm test
+  ```
+- **Pattern**: Write tests ahead of implementation (TDD) where feasible, or at least concurrently. Ensure new features are covered by tests.
+- **Smoke Tests**: Maintain basic smoke tests (e.g., App renders) to ensure the build is safe.
 
 ### Docker Operations
 - **Build & Run**:

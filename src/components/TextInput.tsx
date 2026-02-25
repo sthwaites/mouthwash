@@ -12,7 +12,7 @@ export const TextInput: React.FC<TextInputProps> = ({ value, onChange, placehold
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full h-full bg-gray-800 text-white border border-gray-700 hover:border-gray-500 rounded-lg p-4 resize-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-base placeholder-gray-500"
+      className="w-full h-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500 rounded-lg p-4 resize-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-base placeholder-gray-400 dark:placeholder-gray-500"
     />
   );
 };

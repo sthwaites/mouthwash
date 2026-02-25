@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { useTheme } from "./hooks/useTheme";
 import { processText, type PromptConfig, DEFAULT_PROMPTS } from "./lib/openai";
 import { TextInput } from "./components/TextInput";
 import { ActionButtons } from "./components/ActionButtons";
@@ -13,6 +14,8 @@ function App() {
   const [customPrefix, setCustomPrefix] = useLocalStorage<string>("custom_prefix", "");
   const [customSuffix, setCustomSuffix] = useLocalStorage<string>("custom_suffix", "");
   const [autoCopy, setAutoCopy] = useLocalStorage<boolean>("auto_copy", false);
+
+  const { theme, setTheme } = useTheme();
 
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -46,7 +49,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4 font-sans relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col items-center p-4 font-sans relative transition-colors duration-200">
       {/* Settings Modal */}
       {isSettingsOpen && (
         <SettingsModal
@@ -60,6 +63,8 @@ function App() {
           setCustomSuffix={setCustomSuffix}
           prompts={prompts}
           setPrompts={setPrompts}
+          theme={theme}
+          setTheme={setTheme}
         />
       )}
 
@@ -72,24 +77,24 @@ function App() {
               className="w-10 h-10 md:w-12 md:h-12 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" 
             />
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500">
                 Voice Cleanup
               </h1>
-              <p className="text-xs text-gray-400 hidden sm:block">
+              <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 Professional Voice-to-Text Polish
               </p>
             </div>
           </div>
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="p-2 rounded-full hover:bg-gray-800 text-gray-400 hover:text-white transition-colors border border-transparent hover:border-gray-700"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors border border-transparent hover:border-gray-300 dark:hover:border-gray-700"
             title="Settings"
           >
             <Settings className="w-6 h-6" />
           </button>
         </header>
 
-        <div className="bg-gray-800/40 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-xl border border-gray-700/50 space-y-6 flex flex-col h-[calc(100vh-140px)] md:h-auto overflow-hidden">
+        <div className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700/50 space-y-6 flex flex-col h-[calc(100vh-140px)] md:h-auto overflow-hidden transition-colors duration-200">
           
           <div className="grid md:grid-cols-2 gap-6 h-full overflow-y-auto md:overflow-visible pr-1">
             {/* Input Section */}
@@ -101,7 +106,7 @@ function App() {
                 {inputText && (
                   <button
                     onClick={clearText}
-                    className="text-xs text-red-400 hover:text-red-300 transition-colors px-2 py-1 rounded hover:bg-red-900/10"
+                    className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/10"
                   >
                     Clear
                   </button>
@@ -132,9 +137,9 @@ function App() {
                 />
                 
                 {isLoading && (
-                  <div className="absolute inset-0 bg-gray-900/60 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm z-10 border border-gray-700/50">
+                  <div className="absolute inset-0 bg-white/60 dark:bg-gray-900/60 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm z-10 border border-gray-200 dark:border-gray-700/50">
                     <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-3" />
-                    <span className="text-sm text-blue-400 font-medium tracking-wide">Polishing text...</span>
+                    <span className="text-sm text-blue-600 dark:text-blue-400 font-medium tracking-wide">Polishing text...</span>
                   </div>
                 )}
               </div>
@@ -142,13 +147,13 @@ function App() {
           </div>
 
           {error && (
-            <div className="p-3 bg-red-900/20 border border-red-500/30 text-red-200 rounded-lg text-sm text-center animate-pulse flex items-center justify-center gap-2">
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-200 rounded-lg text-sm text-center animate-pulse flex items-center justify-center gap-2">
               <span className="w-2 h-2 rounded-full bg-red-500"></span>
               {error}
             </div>
           )}
 
-          <div className="pt-4 border-t border-gray-700/30 flex flex-col items-center gap-4 mt-auto">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700/30 flex flex-col items-center gap-4 mt-auto">
             <ActionButtons
               prompts={prompts}
               onProcess={handleProcess}
@@ -158,7 +163,7 @@ function App() {
             {(!apiKey || !inputText.trim()) && (
               <p className="text-xs text-gray-500 italic flex items-center gap-1">
                 {!apiKey ? (
-                  <>Please configure your <span className="text-blue-400 cursor-pointer hover:underline" onClick={() => setIsSettingsOpen(true)}>API Key</span> in settings.</>
+                  <>Please configure your <span className="text-blue-600 dark:text-blue-400 cursor-pointer hover:underline" onClick={() => setIsSettingsOpen(true)}>API Key</span> in settings.</>
                 ) : (
                   "Enter text to begin processing."
                 )}
