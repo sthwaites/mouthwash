@@ -1,12 +1,12 @@
 import { useState } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { useTheme } from "./hooks/useTheme";
-import { processText, type PromptConfig, DEFAULT_PROMPTS } from "./lib/openai";
+import { processText, type PromptConfig, DEFAULT_PROMPTS, MODEL } from "./lib/openai";
 import { TextInput } from "./components/TextInput";
 import { ActionButtons } from "./components/ActionButtons";
 import { OutputDisplay } from "./components/OutputDisplay";
 import { SettingsModal } from "./components/SettingsModal";
-import { Loader2, Settings } from "lucide-react";
+import { Loader2, Settings, Cpu } from "lucide-react";
 
 function App() {
   const [apiKey, setApiKey] = useLocalStorage<string>("openai_api_key", "");
@@ -77,9 +77,15 @@ function App() {
               className="w-10 h-10 md:w-12 md:h-12 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" 
             />
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500">
-                Voice Cleanup
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500">
+                  Voice Cleanup
+                </h1>
+                <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-[10px] font-mono text-gray-600 dark:text-gray-400">
+                  <Cpu className="w-3 h-3" />
+                  {MODEL}
+                </div>
+              </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 Professional Voice-to-Text Polish
               </p>
