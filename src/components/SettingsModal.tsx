@@ -319,7 +319,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         className="bg-transparent text-sm text-gray-500 dark:text-gray-400 focus:outline-none w-full"
                         placeholder="Short description..."
                         onFocus={() => setEditingId(prompt.id)}
+                        maxLength={60}
                       />
+                      <div className="text-[10px] text-gray-400 text-right">
+                        {prompt.description.length}/60
+                      </div>
                     </div>
                     <button
                       onClick={() => handleDeletePrompt(prompt.id)}

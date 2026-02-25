@@ -23,21 +23,21 @@ export interface PromptConfig {
 export const DEFAULT_PROMPTS: PromptConfig[] = [
   {
     id: "cleanup",
-    name: "Cleanup (Coherent)",
+    name: "Clean-up",
     description: "Removes hesitations and fixes errors.",
     systemPrompt:
       "You are a helpful assistant that cleans up transcribed text. Remove any hesitations (um, ah, like, repeated words) and fix obvious transcription errors. Make the text coherent and properly punctuated without changing the meaning or style significantly.",
   },
   {
-    id: "slack-processor",
-    name: "Slack Processor",
+    id: "chat",
+    name: "Chat",
     description: "Brief, friendly, emojis & bullets.",
     systemPrompt:
-      "You are a helpful assistant crafting Slack messages. Your goal is to be friendly, warm, and approachable. Use informal language, appropriate emojis, and bullet points for brevity. Keep messages concise and clear.",
+      "You are a helpful assistant crafting chat messages. Your goal is to be friendly, warm, and approachable. Use informal language, appropriate emojis, and bullet points for brevity. Keep messages concise and clear.",
   },
   {
     id: "email",
-    name: "Email",
+    name: "E-mail",
     description: "Friendly, readable, action-oriented.",
     systemPrompt:
       "You are drafting a professional but friendly email. The tone should be approachable, very readable, and focused on getting things done. Avoid overly formal language.",
