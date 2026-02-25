@@ -1,0 +1,17 @@
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import App from './App';
+
+describe('App', () => {
+  it('renders the main title', () => {
+    render(<App />);
+    const title = screen.getByText(/Voice Cleanup/i);
+    expect(title).toBeInTheDocument();
+  });
+
+  it('renders the input textarea', () => {
+    render(<App />);
+    const input = screen.getByPlaceholderText(/Paste your transcribed text here.../i);
+    expect(input).toBeInTheDocument();
+  });
+});
