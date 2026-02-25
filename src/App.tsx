@@ -8,7 +8,8 @@ import { ActionButtons } from "./components/ActionButtons";
 import { OutputDisplay } from "./components/OutputDisplay";
 import { SettingsModal } from "./components/SettingsModal";
 import { AudioRecorder } from "./components/AudioRecorder";
-import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle, Lock } from "lucide-react";
+import { Tooltip } from "./components/Tooltip";
+import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle, Lock, Clipboard, Check } from "lucide-react";
 
 function App() {
   const [storedApiKey, setStoredApiKey] = useLocalStorage<string>("openai_api_key", "");
@@ -43,6 +44,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Validation State
   const [validationStatus, setValidationStatus] = useState<'idle' | 'validating' | 'valid' | 'invalid'>('idle');
@@ -75,7 +77,14 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await processText(inputText, promptConfig.systemPrompt, apiKey, model, rearrange);
+      const result = await processText(
+        inputText, 
+        promptConfig.systemPrompt, 
+        apiKey, 
+        model, 
+        rearrange,
+        promptConfig.rearrangeInstruction // Pass the per-prompt rework instruction
+      );
       const prefix = applyPrefix && customPrefix ? customPrefix + "\n" : "";
       const suffix = applySuffix && customSuffix ? "\n" + customSuffix : "";
       const finalOutput = `${prefix}${result}${suffix}`;
@@ -101,6 +110,14 @@ function App() {
     setInputText("");
     setOutputText("");
     setError(null);
+  };
+
+  const handleCopy = () => {
+    if (outputText) {
+      navigator.clipboard.writeText(outputText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -182,11 +199,14 @@ function App() {
           <div className="grid md:grid-cols-2 gap-6 pr-1">
             {/* Input Section */}
             <div className="space-y-2 flex flex-col">
-              <div className="flex justify-between items-end">
+              <div className="flex justify-between items-end h-[24px]"> {/* Fixed height for label row */}
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Input
                 </label>
-                <div className="flex items-center gap-2">
+              </div>
+              {/* Input Toolbar - aligned with Output Toolbar */}
+              <div className="flex items-center justify-between gap-2 h-[32px] mb-2">
+                 <div className="flex items-center gap-2">
                   <AudioRecorder 
                     apiKey={apiKey}
                     onTranscriptionComplete={handleTranscriptionComplete}
@@ -202,8 +222,9 @@ function App() {
                       Clear
                     </button>
                   )}
-                </div>
+                 </div>
               </div>
+
               <div>
                  <TextInput
                   value={inputText}
@@ -216,25 +237,85 @@ function App() {
 
             {/* Output Section */}
             <div className="space-y-2 flex flex-col relative">
-              <div className="flex justify-between items-end">
+              <div className="flex justify-between items-end h-[24px]"> {/* Fixed height for label row */}
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Output
                 </label>
               </div>
+
+              {/* Output Toolbar */}
+              <div className="flex items-center justify-between gap-2 h-[32px] mb-2">
+                 <div className="flex flex-wrap gap-4 items-center">
+                    <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={autoCopy}
+                        onChange={() => setAutoCopy(!autoCopy)}
+                        className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
+                      />
+                      <Tooltip content="Auto-copies output to clipboard.">
+                        <span>Auto-copy</span>
+                      </Tooltip>
+                    </label>
+
+                    <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={rearrange}
+                        onChange={(e) => setRearrange(e.target.checked)}
+                        className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
+                      />
+                      <Tooltip content="Rearranges text for better impact.">
+                        <span>Rework</span>
+                      </Tooltip>
+                    </label>
+
+                    {customPrefix && (
+                      <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={applyPrefix}
+                          onChange={(e) => setApplyPrefix(e.target.checked)}
+                          className="form-checkbox h-4 w-4 text-purple-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
+                        />
+                        <Tooltip content="Prepends custom text. (Configurable in Settings)">
+                          <span className="truncate max-w-[150px]" title={`Prefix: ${customPrefix}`}>+ Prefix</span>
+                        </Tooltip>
+                      </label>
+                    )}
+
+                    {customSuffix && (
+                      <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={applySuffix}
+                          onChange={(e) => setApplySuffix(e.target.checked)}
+                          className="form-checkbox h-4 w-4 text-purple-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
+                        />
+                        <Tooltip content="Appends custom text. (Configurable in Settings)">
+                          <span className="truncate max-w-[150px]" title={`Suffix: ${customSuffix}`}>+ Suffix</span>
+                        </Tooltip>
+                      </label>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleCopy}
+                    disabled={!outputText}
+                    className={`flex items-center space-x-1 px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      copied
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
+                    }`}
+                  >
+                    {copied ? <Check className="w-4 h-4" /> : <Clipboard className="w-4 h-4" />}
+                    <span>{copied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+              </div>
               
               <div className="relative">
                 <OutputDisplay 
-                  value={outputText} 
-                  autoCopy={autoCopy} 
-                  toggleAutoCopy={() => setAutoCopy(!autoCopy)}
-                  customPrefix={customPrefix}
-                  customSuffix={customSuffix}
-                  applyPrefix={applyPrefix}
-                  setApplyPrefix={setApplyPrefix}
-                  applySuffix={applySuffix}
-                  setApplySuffix={setApplySuffix}
-                  rearrange={rearrange}
-                  setRearrange={setRearrange}
+                  value={outputText}
                 />
                 
                 {isLoading && (

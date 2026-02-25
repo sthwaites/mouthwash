@@ -18,7 +18,10 @@ export interface PromptConfig {
   name: string;
   systemPrompt: string;
   description: string;
+  rearrangeInstruction?: string;
 }
+
+const DEFAULT_REARRANGE_INSTRUCTION = "Additionally, identify long passages that contain multiple points and subclauses. Rearrange the content to enhance its impact while ensuring that the original tone and substance remain unchanged.";
 
 export const DEFAULT_PROMPTS: PromptConfig[] = [
   {
@@ -27,6 +30,8 @@ export const DEFAULT_PROMPTS: PromptConfig[] = [
     description: "Removes hesitations and fixes errors.",
     systemPrompt:
       "You are a transcription editor. Rewrite the provided text to remove hesitations (um, ah, like, you know, repeated words), fix grammar and punctuation, and correct obvious transcription errors. Do not add new ideas, respond to the content, or change the meaning. Output only the cleaned-up text.",
+    rearrangeInstruction:
+      "Additionally, where the text contains multiple points or long run-on sentences, reorder or restructure them to improve flow and readability. Do not introduce new ideas or change the meaning.",
   },
   {
     id: "chat",
@@ -56,7 +61,8 @@ export async function processText(
   systemPrompt: string,
   apiKey: string,
   model: string = DEFAULT_MODEL,
-  rearrange: boolean = false
+  rearrange: boolean = false,
+  rearrangeInstruction?: string
 ): Promise<string> {
   if (!apiKey) {
     throw new Error("API Key is required");
@@ -69,7 +75,7 @@ export async function processText(
 
   let finalSystemPrompt = systemPrompt;
   if (rearrange) {
-    finalSystemPrompt += " Additionally, identify long passages that contain multiple points and subclauses. Rearrange the content to enhance its impact while ensuring that the original tone and substance remain unchanged.";
+    finalSystemPrompt += " " + (rearrangeInstruction || DEFAULT_REARRANGE_INSTRUCTION);
   }
 
   try {
