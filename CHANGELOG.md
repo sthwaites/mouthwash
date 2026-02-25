@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-02-25
+
+### Added
+
+- **Settings Modal**: Dedicated settings interface for managing API keys and application preferences.
+- **Configurable Prompts**:
+  - Ability to customize system prompts for existing modes.
+  - Create, edit, and delete custom prompt modes.
+- **Output Customization**: Options to add custom prefix and suffix to processed text (e.g., "🎧 Transcribed:").
+- **CI/CD**: GitHub Actions workflow (`docker-publish.yml`) to build and push Docker images to GHCR.
+- **Developer Experience**: Docker Compose Watch support for hot-reloading during containerized development.
+- **Branding**: New application icon and favicon featuring a modern headset design.
+
+### Changed
+
+- **UI Refactor**: Moved API key input from the main header to the new Settings Modal.
+- **Responsive Design**: improved layout for narrow "sidebar" usage.
+
 ## [0.1.0] - 2026-02-25
 
 ### Added

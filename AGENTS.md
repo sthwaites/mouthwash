@@ -107,6 +107,7 @@ If tests are added in the future, standard Vite patterns suggest using **Vitest*
   - Use JSDoc for complex utility functions.
   - Comment *why* complex logic exists, not *what* it does.
 - **Changes**: Update `CHANGELOG.md` for any notable feature additions or bug fixes using Keep a Changelog format.
+- **README Updates**: Always revisit `README.md` after implementing significant architectural changes, new features, or setup instructions to ensure documentation remains accurate and up-to-date.
 
 ## 5. Security Protocols
 - **API Keys**: NEVER commit API keys.
