@@ -41,7 +41,8 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4 font-sans">
       <div className="w-full max-w-4xl space-y-8 mt-10">
-        <header className="text-center space-y-2">
+        <header className="text-center space-y-2 flex flex-col items-center">
+          <img src="/icon.svg" alt="Voice Cleanup Logo" className="w-16 h-16 mb-2 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
             Voice Cleanup
           </h1>
