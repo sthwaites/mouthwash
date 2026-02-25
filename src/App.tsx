@@ -2,15 +2,29 @@ import { useState, useEffect } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { useTheme } from "./hooks/useTheme";
 import { processText, validateConfiguration, type PromptConfig, DEFAULT_PROMPTS, DEFAULT_MODEL, type AIModel } from "./lib/openai";
+import { getEnvApiKey, isEnvKeyPresent } from "./lib/env";
 import { TextInput } from "./components/TextInput";
 import { ActionButtons } from "./components/ActionButtons";
 import { OutputDisplay } from "./components/OutputDisplay";
 import { SettingsModal } from "./components/SettingsModal";
 import { AudioRecorder } from "./components/AudioRecorder";
-import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle, Lock } from "lucide-react";
 
 function App() {
-  const [apiKey, setApiKey] = useLocalStorage<string>("openai_api_key", "");
+  const [storedApiKey, setStoredApiKey] = useLocalStorage<string>("openai_api_key", "");
+  const envApiKey = getEnvApiKey();
+  const isEnvManaged = isEnvKeyPresent();
+  
+  // Use environment key if present, otherwise fall back to stored key
+  const apiKey = isEnvManaged && envApiKey ? envApiKey : storedApiKey;
+
+  // Wrapper for setApiKey to only update storage if not managed by env
+  const setApiKey = (key: string) => {
+    if (!isEnvManaged) {
+      setStoredApiKey(key);
+    }
+  };
+
   const [model, setModel] = useLocalStorage<AIModel>("openai_model", DEFAULT_MODEL);
   const [prompts, setPrompts] = useLocalStorage<PromptConfig[]>("custom_prompts", DEFAULT_PROMPTS);
   const [customPrefix, setCustomPrefix] = useLocalStorage<string>("custom_prefix", "");
@@ -98,6 +112,7 @@ function App() {
           onClose={() => setIsSettingsOpen(false)}
           apiKey={apiKey}
           setApiKey={setApiKey}
+          isEnvManaged={isEnvManaged}
           model={model}
           setModel={setModel}
           customPrefix={customPrefix}
@@ -134,7 +149,8 @@ function App() {
                   <Cpu className="w-3 h-3" />
                   {model}
                   {/* Validation Indicator */}
-                  <div className="ml-1" title={validationMessage || "Configuration Status"}>
+                  <div className="ml-1 flex items-center gap-1" title={validationMessage || "Configuration Status"}>
+                    {isEnvManaged && <Lock className="w-3 h-3 text-gray-500" />}
                     {validationStatus === 'validating' && (
                       <Loader2 className="w-3 h-3 animate-spin text-blue-500" />
                     )}

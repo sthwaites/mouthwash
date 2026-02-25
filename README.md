@@ -65,6 +65,25 @@ npm run build
 
 The output will be in the `dist/` directory, ready to be served by any static file server.
 
+### Running with Environment Variables
+
+You can supply your OpenAI API Key via an environment variable to avoid entering it in the browser.
+
+**Docker Compose:**
+Create a `.env` file (or rename `.env.example`) and set your key:
+```bash
+OPENAI_API_KEY=sk-proj-xxxxxxxxxxxx
+```
+Then run:
+```bash
+docker-compose up -d --build
+```
+
+**Docker Run:**
+```bash
+docker run -e OPENAI_API_KEY=sk-proj-xxxxxxxxxxxx -p 8080:80 ghcr.io/yourusername/mouthwash
+```
+
 ### Docker Deployment
 
 Run the application in a lightweight container using Docker Compose:

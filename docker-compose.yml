@@ -19,4 +19,7 @@ services:
           path: package.json
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - VITE_OPENAI_API_KEY=${OPENAI_API_KEY}
+    env_file:
+      - .env
     image: voice-cleanup:dev

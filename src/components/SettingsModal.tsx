@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Plus, Trash2, Save, Undo, Key, Sun, Moon, Monitor, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { X, Plus, Trash2, Save, Undo, Key, Sun, Moon, Monitor, CheckCircle2, AlertCircle, Loader2, Lock } from "lucide-react";
 import { type PromptConfig, DEFAULT_PROMPTS, type AIModel, AVAILABLE_MODELS } from "../lib/openai";
 import type { Theme } from "../hooks/useTheme";
 import { RecordingSettings } from "./RecordingSettings";
@@ -9,6 +9,7 @@ interface SettingsModalProps {
   onClose: () => void;
   apiKey: string;
   setApiKey: (key: string) => void;
+  isEnvManaged?: boolean;
   model: AIModel;
   setModel: (model: AIModel) => void;
   customPrefix: string;
@@ -32,6 +33,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onClose,
   apiKey,
   setApiKey,
+  isEnvManaged = false,
   model,
   setModel,
   customPrefix,
@@ -156,7 +158,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   OpenAI API Key
                 </label>
                 {/* Validation Status */}
-                {apiKey && (
+                <div className="flex items-center gap-2">
+                  {isEnvManaged && (
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-200 dark:bg-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
+                      <Lock className="w-3 h-3" />
+                      Managed by Environment
+                    </div>
+                  )}
+                  {apiKey && (
                    <div className="flex items-center gap-1.5 text-xs font-medium animate-in fade-in zoom-in duration-200">
                     {validationStatus === 'validating' && (
                       <>
@@ -178,19 +187,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     )}
                   </div>
                 )}
+                </div>
               </div>
               
               <input
                 type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
+                value={isEnvManaged ? "•".repeat(20) : apiKey}
+                onChange={(e) => !isEnvManaged && setApiKey(e.target.value)}
+                disabled={isEnvManaged}
                 placeholder="sk-..."
                 className={`w-full bg-white dark:bg-gray-900 border rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:ring-2 outline-none placeholder-gray-400 dark:placeholder-gray-600 transition-colors ${
-                  validationStatus === 'invalid' 
-                    ? 'border-red-300 dark:border-red-500/50 focus:ring-red-500 focus:border-red-500' 
-                    : validationStatus === 'valid'
-                      ? 'border-green-300 dark:border-green-500/50 focus:ring-green-500 focus:border-green-500'
-                      : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                  isEnvManaged
+                    ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                    : validationStatus === 'invalid' 
+                      ? 'border-red-300 dark:border-red-500/50 focus:ring-red-500 focus:border-red-500' 
+                      : validationStatus === 'valid'
+                        ? 'border-green-300 dark:border-green-500/50 focus:ring-green-500 focus:border-green-500'
+                        : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
                 }`}
               />
               
@@ -202,7 +215,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               )}
               
               <p className="text-xs text-gray-500 mt-2">
-                Stored locally in your browser. Never sent to our servers.
+                {isEnvManaged 
+                  ? "API Key is provided securely via environment variables."
+                  : "Stored locally in your browser. Never sent to our servers."
+                }
               </p>
             </div>
           </section>
