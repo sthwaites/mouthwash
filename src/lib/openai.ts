@@ -62,7 +62,8 @@ export async function processText(
   text: string,
   systemPrompt: string,
   apiKey: string,
-  model: string = DEFAULT_MODEL
+  model: string = DEFAULT_MODEL,
+  rearrange: boolean = false
 ): Promise<string> {
   if (!apiKey) {
     throw new Error("API Key is required");
@@ -73,10 +74,15 @@ export async function processText(
     dangerouslyAllowBrowser: true, // Client-side only app requirement
   });
 
+  let finalSystemPrompt = systemPrompt;
+  if (rearrange) {
+    finalSystemPrompt += " Additionally, identify long passages that contain multiple points and subclauses. Rearrange the content to enhance its impact while ensuring that the original tone and substance remain unchanged.";
+  }
+
   try {
     const completion = await openai.chat.completions.create({
       messages: [
-        { role: "system", content: systemPrompt },
+        { role: "system", content: finalSystemPrompt },
         { role: "user", content: text },
       ],
       model: model,

@@ -17,6 +17,7 @@ function App() {
   const [customSuffix, setCustomSuffix] = useLocalStorage<string>("custom_suffix", "");
   const [applyPrefix, setApplyPrefix] = useLocalStorage<boolean>("apply_prefix", true);
   const [applySuffix, setApplySuffix] = useLocalStorage<boolean>("apply_suffix", true);
+  const [rearrange, setRearrange] = useLocalStorage<boolean>("rearrange_output", false);
   const [autoCopy, setAutoCopy] = useLocalStorage<boolean>("auto_copy", false);
   const [recordingShortcut, setRecordingShortcut] = useLocalStorage<string>("recording_shortcut", "Control+Space");
   const [recordingMode, setRecordingMode] = useLocalStorage<"toggle" | "hold">("recording_mode", "toggle");
@@ -60,7 +61,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await processText(inputText, promptConfig.systemPrompt, apiKey, model);
+      const result = await processText(inputText, promptConfig.systemPrompt, apiKey, model, rearrange);
       const prefix = applyPrefix && customPrefix ? customPrefix + "\n" : "";
       const suffix = applySuffix && customSuffix ? "\n" + customSuffix : "";
       const finalOutput = `${prefix}${result}${suffix}`;
@@ -216,6 +217,8 @@ function App() {
                   setApplyPrefix={setApplyPrefix}
                   applySuffix={applySuffix}
                   setApplySuffix={setApplySuffix}
+                  rearrange={rearrange}
+                  setRearrange={setRearrange}
                 />
                 
                 {isLoading && (

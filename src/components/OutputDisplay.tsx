@@ -11,6 +11,8 @@ interface OutputDisplayProps {
   setApplyPrefix: (value: boolean) => void;
   applySuffix: boolean;
   setApplySuffix: (value: boolean) => void;
+  rearrange: boolean;
+  setRearrange: (value: boolean) => void;
 }
 
 export const OutputDisplay: React.FC<OutputDisplayProps> = ({ 
@@ -22,7 +24,9 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
   applyPrefix,
   setApplyPrefix,
   applySuffix,
-  setApplySuffix
+  setApplySuffix,
+  rearrange,
+  setRearrange
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -47,6 +51,16 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
                 className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
               />
               <span>Auto-copy</span>
+            </label>
+
+            <label className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors">
+              <input
+                type="checkbox"
+                checked={rearrange}
+                onChange={(e) => setRearrange(e.target.checked)}
+                className="form-checkbox h-4 w-4 text-blue-600 rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900"
+              />
+              <span>Rework</span>
             </label>
 
             {customPrefix && (
