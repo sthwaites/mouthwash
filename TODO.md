@@ -2,18 +2,19 @@
 
 ## 🔄 High Priority
 
-- [ ] **Responsive Sidebar Mode**: Optimize layout for narrow widths (thin column/sidebar usage) - essential for productivity side-tool.
-- [ ] **Settings Modal**: Move API key configuration to a dedicated settings modal.
-- [ ] **Configurable Prompts**:
-    - [ ] Allow users to edit system prompts for each mode.
-    - [ ] **Add/Remove Prompts**: Enable users to create new custom modes (with their own prompts) and delete existing ones.
-- [ ] **Custom Prefix/Suffix**: Allow users to append text (e.g., "🎧 *Transcribed:*") to the output.
-- [ ] **Application Icon**: Create a modern, round/square icon featuring a headset/microphone.
-- [ ] **Favicon**: Use the application icon as the favicon.
-- [ ] **Modern UI/UX**: Enhance design with friendly colors, hover effects, and modern styling.
+- [x] **Responsive Sidebar Mode**: Optimized layout for narrow widths.
+- [x] **Settings Modal**: Moved API key configuration to a dedicated settings modal.
+- [x] **Configurable Prompts**:
+    - [x] Allow users to edit system prompts for each mode.
+    - [x] **Add/Remove Prompts**: Users can create/delete custom modes.
+- [x] **Custom Prefix/Suffix**: Allow users to append text (e.g., "🎧 *Transcribed:*").
+- [x] **Application Icon**: Created a modern, round/square icon featuring a headset/microphone.
+- [x] **Favicon**: Use the application icon as the favicon.
+- [x] **Modern UI/UX**: Enhanced design with friendly colors, hover effects.
 
 ## 🚀 DevOps & CI/CD
 
+- [x] **Docker Compose Watch**: Enabled `develop` section for hot-reloading in containers.
 - [ ] **GitHub Actions Pipeline**:
     - [ ] Build Docker image.
     - [ ] Push image to **GitHub Container Registry (GHCR)**.
