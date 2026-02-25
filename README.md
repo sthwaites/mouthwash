@@ -7,6 +7,7 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 - **🗣️ Cleanup Mode**: Intelligently removes filler words (um, ah, like), hesitations, and stutters while preserving the original meaning and word choice.
 - **💼 Business Polish**: Rewrites casual or fragmented speech into professional business English, removing colloquialisms and improving clarity.
 - **🤖 Prompt Mode**: Converts rambling instructions into high-quality, structured prompts optimized for AI models like ChatGPT, Claude, and Gemini.
+- **🎙️ Voice Recording**: Record your thoughts directly in the browser using OpenAI's Whisper model for accurate speech-to-text transcription.
 - **🔒 Privacy First**: Your OpenAI API key is stored locally in your browser (LocalStorage) and never sent to our servers. All processing happens directly between your browser and OpenAI.
 - **⚡ Blazing Fast**: Built with React + Vite for instant load times and responsive interactions.
 - **🌗 Theme Support**: Choose between Light, Dark, or System Sync modes for a comfortable viewing experience in any environment.
@@ -17,7 +18,7 @@ A modern, privacy-focused web application for cleaning up, polishing, and optimi
 - **Frontend**: React 19, TypeScript, Vite
 - **Styling**: Tailwind CSS v4
 - **Icons**: Lucide React
-- **AI Integration**: OpenAI API (GPT-4o-mini)
+- **AI Integration**: OpenAI API (GPT-4o-mini & Whisper)
 - **State Management**: React Hooks + LocalStorage
 - **Containerization**: Docker, Docker Compose, Nginx
 
