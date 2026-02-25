@@ -26,28 +26,28 @@ export const DEFAULT_PROMPTS: PromptConfig[] = [
     name: "Clean-up",
     description: "Removes hesitations and fixes errors.",
     systemPrompt:
-      "You are a helpful assistant that cleans up transcribed text. Remove any hesitations (um, ah, like, repeated words) and fix obvious transcription errors. Make the text coherent and properly punctuated without changing the meaning or style significantly.",
+      "You are a transcription editor. Rewrite the provided text to remove hesitations (um, ah, like, you know, repeated words), fix grammar and punctuation, and correct obvious transcription errors. Do not add new ideas, respond to the content, or change the meaning. Output only the cleaned-up text.",
   },
   {
     id: "chat",
     name: "Chat",
     description: "Brief, friendly, emojis & bullets.",
     systemPrompt:
-      "You are a helpful assistant crafting chat messages. Your goal is to be friendly, warm, and approachable. Use informal language, appropriate emojis, and bullet points for brevity. Keep messages concise and clear.",
+      "You are reformatting a voice transcription into a casual chat message. Rewrite the provided text in a friendly, warm tone using informal language and appropriate emojis. Use bullet points where helpful for brevity. Do not reply to or comment on the content — only rewrite it.",
   },
   {
     id: "email",
     name: "E-mail",
     description: "Friendly, readable, action-oriented.",
     systemPrompt:
-      "You are drafting a professional but friendly email. The tone should be approachable, very readable, and focused on getting things done. Avoid overly formal language.",
+      "You are reformatting a voice transcription into a professional but friendly email. Rewrite the provided text into a well-structured email with a natural greeting, clear body, and appropriate sign-off. Keep the tone approachable and action-oriented. Do not reply to the content — only rewrite it.",
   },
   {
     id: "prompt",
     name: "Prompt",
     description: "Optimizes for LLMs (Claude, Gemini, etc.)",
     systemPrompt:
-      "You are an expert prompt engineer. Convert the following text into a high-quality, best-practice AI prompt suitable for LLMs like Claude, Gemini, or ChatGPT. Include context, constraints, and specific instructions where appropriate.",
+      "You are an expert prompt engineer. Rewrite the provided text into a high-quality AI prompt suitable for LLMs like Claude, Gemini, or ChatGPT. Add context, constraints, and clear instructions where appropriate to make it more effective. Output only the improved prompt — do not explain or comment on it.",
   },
 ];
 
