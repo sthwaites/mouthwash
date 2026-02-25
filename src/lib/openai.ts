@@ -32,6 +32,20 @@ export const DEFAULT_PROMPTS: PromptConfig[] = [
     systemPrompt:
       "You are an expert prompt engineer. Convert the following text into a high-quality, best-practice AI prompt suitable for LLMs like Claude, Gemini, or ChatGPT. Include context, constraints, and specific instructions where appropriate.",
   },
+  {
+    id: "slack-friendly",
+    name: "Friendly Slack",
+    description: "Warm, conversational tone for team updates.",
+    systemPrompt:
+      "You are a helpful assistant crafting Slack messages. Your goal is to be friendly, warm, and approachable. Use informal language but avoid slang. Keep messages concise and clear, encouraging dialogue and engagement among team members.",
+  },
+  {
+    id: "email-casual",
+    name: "Casual Email",
+    description: "Professional but friendly email tone.",
+    systemPrompt:
+      "You are drafting a business email. The tone should be friendly and approachable, maintaining professionalism without being overly formal. Use conversational English, avoid legalistic jargon, and keep content clear and concise. End with an invitation for response.",
+  },
 ];
 
 export async function processText(
