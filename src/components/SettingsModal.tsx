@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { X, Plus, Trash2, Save, Undo, Key, Sun, Moon, Monitor } from "lucide-react";
-import { type PromptConfig, DEFAULT_PROMPTS } from "../lib/openai";
+import React, { useState } from "react";
+import { X, Plus, Trash2, Save, Undo, Key, Sun, Moon, Monitor, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { type PromptConfig, DEFAULT_PROMPTS, type AIModel, AVAILABLE_MODELS } from "../lib/openai";
 import type { Theme } from "../hooks/useTheme";
 
 interface SettingsModalProps {
@@ -8,6 +8,8 @@ interface SettingsModalProps {
   onClose: () => void;
   apiKey: string;
   setApiKey: (key: string) => void;
+  model: AIModel;
+  setModel: (model: AIModel) => void;
   customPrefix: string;
   setCustomPrefix: (val: string) => void;
   customSuffix: string;
@@ -16,6 +18,8 @@ interface SettingsModalProps {
   setPrompts: (prompts: PromptConfig[]) => void;
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  validationStatus: 'idle' | 'validating' | 'valid' | 'invalid';
+  validationMessage: string | null;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -23,6 +27,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onClose,
   apiKey,
   setApiKey,
+  model,
+  setModel,
   customPrefix,
   setCustomPrefix,
   customSuffix,
@@ -31,16 +37,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   setPrompts,
   theme,
   setTheme,
+  validationStatus,
+  validationMessage,
 }) => {
   const [localPrompts, setLocalPrompts] = useState<PromptConfig[]>(prompts);
   const [editingId, setEditingId] = useState<string | null>(null);
-  
-  // Reset local state when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setLocalPrompts(prompts);
-    }
-  }, [isOpen, prompts]);
 
   const handleSavePrompts = () => {
     setPrompts(localPrompts);
@@ -141,20 +142,86 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <Key className="w-5 h-5" /> API Configuration
             </h3>
             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                OpenAI API Key
-              </label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  OpenAI API Key
+                </label>
+                {/* Validation Status */}
+                {apiKey && (
+                   <div className="flex items-center gap-1.5 text-xs font-medium animate-in fade-in zoom-in duration-200">
+                    {validationStatus === 'validating' && (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-500" />
+                        <span className="text-blue-500">Validating...</span>
+                      </>
+                    )}
+                    {validationStatus === 'valid' && (
+                      <>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
+                        <span className="text-green-600 dark:text-green-400">Valid Configuration</span>
+                      </>
+                    )}
+                    {validationStatus === 'invalid' && (
+                      <>
+                        <AlertCircle className="w-3.5 h-3.5 text-red-500" />
+                        <span className="text-red-600 dark:text-red-400">Invalid Configuration</span>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+              
               <input
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 placeholder="sk-..."
-                className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400 dark:placeholder-gray-600"
+                className={`w-full bg-white dark:bg-gray-900 border rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:ring-2 outline-none placeholder-gray-400 dark:placeholder-gray-600 transition-colors ${
+                  validationStatus === 'invalid' 
+                    ? 'border-red-300 dark:border-red-500/50 focus:ring-red-500 focus:border-red-500' 
+                    : validationStatus === 'valid'
+                      ? 'border-green-300 dark:border-green-500/50 focus:ring-green-500 focus:border-green-500'
+                      : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                }`}
               />
+              
+              {validationStatus === 'invalid' && validationMessage && (
+                <p className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {validationMessage}
+                </p>
+              )}
+              
               <p className="text-xs text-gray-500 mt-2">
                 Stored locally in your browser. Never sent to our servers.
               </p>
             </div>
+          </section>
+
+          {/* Model Selection */}
+          <section className="space-y-4">
+             <h3 className="text-lg font-semibold text-orange-600 dark:text-orange-400 flex items-center gap-2">
+               AI Model
+             </h3>
+             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+               <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                 Select Model
+               </label>
+               <select
+                 value={model}
+                 onChange={(e) => setModel(e.target.value as AIModel)}
+                 className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none"
+               >
+                 {AVAILABLE_MODELS.map((m) => (
+                   <option key={m} value={m}>
+                     {m}
+                   </option>
+                 ))}
+               </select>
+               <p className="text-xs text-gray-500 mt-2">
+                 Choose the OpenAI model to use for processing.
+               </p>
+             </div>
           </section>
 
           {/* Output Customization */}

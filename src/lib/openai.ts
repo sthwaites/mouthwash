@@ -1,7 +1,17 @@
 import OpenAI from "openai";
 
-// Using gpt-5-nano as the default model
-export const MODEL = "gpt-5-nano";
+// Define available models
+export const AVAILABLE_MODELS = [
+  "gpt-5-nano",
+  "gpt-4o",
+  "gpt-4o-mini",
+  "gpt-3.5-turbo",
+] as const;
+
+export type AIModel = (typeof AVAILABLE_MODELS)[number];
+
+// Default model
+export const DEFAULT_MODEL: AIModel = "gpt-5-nano";
 
 export interface PromptConfig {
   id: string;
@@ -51,7 +61,8 @@ export const DEFAULT_PROMPTS: PromptConfig[] = [
 export async function processText(
   text: string,
   systemPrompt: string,
-  apiKey: string
+  apiKey: string,
+  model: string = DEFAULT_MODEL
 ): Promise<string> {
   if (!apiKey) {
     throw new Error("API Key is required");
@@ -68,7 +79,7 @@ export async function processText(
         { role: "system", content: systemPrompt },
         { role: "user", content: text },
       ],
-      model: MODEL,
+      model: model,
     });
 
     return completion.choices[0]?.message?.content || "";
@@ -90,5 +101,61 @@ export async function processText(
     }
 
     throw error;
+  }
+}
+
+export interface ValidationResult {
+  isValid: boolean;
+  message?: string;
+}
+
+export async function validateConfiguration(
+  apiKey: string,
+  model: string
+): Promise<ValidationResult> {
+  if (!apiKey) {
+    return { isValid: false, message: "API Key is missing." };
+  }
+
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    dangerouslyAllowBrowser: true,
+  });
+
+  try {
+    // Attempt a minimal completion to verify both Key validity AND Model access
+    await openai.chat.completions.create({
+      model: model,
+      messages: [{ role: "user", content: "Hi" }],
+      max_tokens: 1,
+    });
+
+    return { isValid: true };
+  } catch (error) {
+    console.error("Validation Error:", error);
+
+    if (error instanceof OpenAI.APIError) {
+      switch (error.status) {
+        case 401:
+          return { isValid: false, message: "Invalid API Key." };
+        case 404:
+          return {
+            isValid: false,
+            message: `Model '${model}' not accessible with this key.`,
+          };
+        case 429:
+          return {
+            isValid: false,
+            message: "Rate limit exceeded or insufficient quota.",
+          };
+        default:
+          return { isValid: false, message: error.message };
+      }
+    }
+
+    return {
+      isValid: false,
+      message: error instanceof Error ? error.message : "Unknown validation error",
+    };
   }
 }

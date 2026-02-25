@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { useTheme } from "./hooks/useTheme";
-import { processText, type PromptConfig, DEFAULT_PROMPTS, MODEL } from "./lib/openai";
+import { processText, validateConfiguration, type PromptConfig, DEFAULT_PROMPTS, DEFAULT_MODEL, type AIModel } from "./lib/openai";
 import { TextInput } from "./components/TextInput";
 import { ActionButtons } from "./components/ActionButtons";
 import { OutputDisplay } from "./components/OutputDisplay";
 import { SettingsModal } from "./components/SettingsModal";
-import { Loader2, Settings, Cpu } from "lucide-react";
+import { Loader2, Settings, Cpu, CheckCircle2, AlertCircle } from "lucide-react";
 
 function App() {
   const [apiKey, setApiKey] = useLocalStorage<string>("openai_api_key", "");
+  const [model, setModel] = useLocalStorage<AIModel>("openai_model", DEFAULT_MODEL);
   const [prompts, setPrompts] = useLocalStorage<PromptConfig[]>("custom_prompts", DEFAULT_PROMPTS);
   const [customPrefix, setCustomPrefix] = useLocalStorage<string>("custom_prefix", "");
   const [customSuffix, setCustomSuffix] = useLocalStorage<string>("custom_suffix", "");
@@ -25,11 +26,38 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
+  // Validation State
+  const [validationStatus, setValidationStatus] = useState<'idle' | 'validating' | 'valid' | 'invalid'>('idle');
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!apiKey) {
+      setValidationStatus('idle');
+      setValidationMessage(null);
+      return;
+    }
+
+    setValidationStatus('validating');
+    
+    const checkConfig = async () => {
+      const result = await validateConfiguration(apiKey, model);
+      setValidationStatus(result.isValid ? 'valid' : 'invalid');
+      setValidationMessage(result.message || null);
+    };
+
+    const timer = setTimeout(() => {
+      checkConfig();
+    }, 800); // 800ms debounce
+
+    return () => clearTimeout(timer);
+  }, [apiKey, model]);
+
+
   const handleProcess = async (promptConfig: PromptConfig) => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await processText(inputText, promptConfig.systemPrompt, apiKey);
+      const result = await processText(inputText, promptConfig.systemPrompt, apiKey, model);
       const prefix = applyPrefix && customPrefix ? customPrefix + "\n" : "";
       const suffix = applySuffix && customSuffix ? "\n" + customSuffix : "";
       const finalOutput = `${prefix}${result}${suffix}`;
@@ -38,9 +66,10 @@ function App() {
       if (autoCopy) {
         await navigator.clipboard.writeText(finalOutput);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "An error occurred during processing.");
+      const errorMessage = err instanceof Error ? err.message : "An error occurred during processing.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -61,6 +90,8 @@ function App() {
           onClose={() => setIsSettingsOpen(false)}
           apiKey={apiKey}
           setApiKey={setApiKey}
+          model={model}
+          setModel={setModel}
           customPrefix={customPrefix}
           setCustomPrefix={setCustomPrefix}
           customSuffix={customSuffix}
@@ -69,6 +100,8 @@ function App() {
           setPrompts={setPrompts}
           theme={theme}
           setTheme={setTheme}
+          validationStatus={validationStatus}
+          validationMessage={validationMessage}
         />
       )}
 
@@ -87,7 +120,19 @@ function App() {
                 </h1>
                 <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-[10px] font-mono text-gray-600 dark:text-gray-400">
                   <Cpu className="w-3 h-3" />
-                  {MODEL}
+                  {model}
+                  {/* Validation Indicator */}
+                  <div className="ml-1" title={validationMessage || "Configuration Status"}>
+                    {validationStatus === 'validating' && (
+                      <Loader2 className="w-3 h-3 animate-spin text-blue-500" />
+                    )}
+                    {validationStatus === 'valid' && (
+                      <CheckCircle2 className="w-3 h-3 text-green-500" />
+                    )}
+                    {validationStatus === 'invalid' && (
+                      <AlertCircle className="w-3 h-3 text-red-500" />
+                    )}
+                  </div>
                 </div>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
