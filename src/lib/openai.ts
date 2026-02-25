@@ -29,32 +29,25 @@ export const DEFAULT_PROMPTS: PromptConfig[] = [
       "You are a helpful assistant that cleans up transcribed text. Remove any hesitations (um, ah, like, repeated words) and fix obvious transcription errors. Make the text coherent and properly punctuated without changing the meaning or style significantly.",
   },
   {
-    id: "business",
-    name: "Business Polish",
-    description: "Professional business English.",
+    id: "slack-processor",
+    name: "Slack Processor",
+    description: "Brief, friendly, emojis & bullets.",
     systemPrompt:
-      "You are a professional editor. Rewrite the following text into a professional business English sentence. Remove contractions, improve vocabulary, and use best practices for clarity and professional tone.",
+      "You are a helpful assistant crafting Slack messages. Your goal is to be friendly, warm, and approachable. Use informal language, appropriate emojis, and bullet points for brevity. Keep messages concise and clear.",
+  },
+  {
+    id: "email",
+    name: "Email",
+    description: "Friendly, readable, action-oriented.",
+    systemPrompt:
+      "You are drafting a professional but friendly email. The tone should be approachable, very readable, and focused on getting things done. Avoid overly formal language.",
   },
   {
     id: "prompt",
-    name: "Prompt (Best Practice)",
+    name: "Prompt",
     description: "Optimizes for LLMs (Claude, Gemini, etc.)",
     systemPrompt:
       "You are an expert prompt engineer. Convert the following text into a high-quality, best-practice AI prompt suitable for LLMs like Claude, Gemini, or ChatGPT. Include context, constraints, and specific instructions where appropriate.",
-  },
-  {
-    id: "slack-friendly",
-    name: "Friendly Slack",
-    description: "Warm, conversational tone for team updates.",
-    systemPrompt:
-      "You are a helpful assistant crafting Slack messages. Your goal is to be friendly, warm, and approachable. Use informal language but avoid slang. Keep messages concise and clear, encouraging dialogue and engagement among team members.",
-  },
-  {
-    id: "email-casual",
-    name: "Casual Email",
-    description: "Professional but friendly email tone.",
-    systemPrompt:
-      "You are drafting a business email. The tone should be friendly and approachable, maintaining professionalism without being overly formal. Use conversational English, avoid legalistic jargon, and keep content clear and concise. End with an invitation for response.",
   },
 ];
 
