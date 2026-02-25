@@ -13,6 +13,8 @@ function App() {
   const [prompts, setPrompts] = useLocalStorage<PromptConfig[]>("custom_prompts", DEFAULT_PROMPTS);
   const [customPrefix, setCustomPrefix] = useLocalStorage<string>("custom_prefix", "");
   const [customSuffix, setCustomSuffix] = useLocalStorage<string>("custom_suffix", "");
+  const [applyPrefix, setApplyPrefix] = useLocalStorage<boolean>("apply_prefix", true);
+  const [applySuffix, setApplySuffix] = useLocalStorage<boolean>("apply_suffix", true);
   const [autoCopy, setAutoCopy] = useLocalStorage<boolean>("auto_copy", false);
 
   const { theme, setTheme } = useTheme();
@@ -28,7 +30,9 @@ function App() {
     setError(null);
     try {
       const result = await processText(inputText, promptConfig.systemPrompt, apiKey);
-      const finalOutput = `${customPrefix ? customPrefix + "\n" : ""}${result}${customSuffix ? "\n" + customSuffix : ""}`;
+      const prefix = applyPrefix && customPrefix ? customPrefix + "\n" : "";
+      const suffix = applySuffix && customSuffix ? "\n" + customSuffix : "";
+      const finalOutput = `${prefix}${result}${suffix}`;
       
       setOutputText(finalOutput);
       if (autoCopy) {
@@ -139,7 +143,13 @@ function App() {
                 <OutputDisplay 
                   value={outputText} 
                   autoCopy={autoCopy} 
-                  toggleAutoCopy={() => setAutoCopy(!autoCopy)} 
+                  toggleAutoCopy={() => setAutoCopy(!autoCopy)}
+                  customPrefix={customPrefix}
+                  customSuffix={customSuffix}
+                  applyPrefix={applyPrefix}
+                  setApplyPrefix={setApplyPrefix}
+                  applySuffix={applySuffix}
+                  setApplySuffix={setApplySuffix}
                 />
                 
                 {isLoading && (
