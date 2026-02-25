@@ -10,7 +10,8 @@ const mockAudioCreate = vi.fn();
 vi.mock('openai', () => {
   class APIError extends Error {
     status: number | undefined;
-    constructor(status: number | undefined, error: any, message: string, headers: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    constructor(status: number | undefined, _error: unknown, message: string, _headers: unknown) {
       super(message);
       this.status = status;
     }
@@ -110,15 +111,15 @@ describe('OpenAI Library', () => {
     });
 
     it('should handle OpenAI API errors in processText', async () => {
-        const error401 = new OpenAI.APIError(401, {}, 'Invalid API Key', {} as any);
+        const error401 = new OpenAI.APIError(401, {}, 'Invalid API Key', undefined);
         mockCreate.mockRejectedValue(error401);
         await expect(processText(userText, systemPrompt, apiKey)).rejects.toThrow('Invalid API Key. Please check your settings.');
 
-        const error429 = new OpenAI.APIError(429, {}, 'Rate limit', {} as any);
+        const error429 = new OpenAI.APIError(429, {}, 'Rate limit', undefined);
         mockCreate.mockRejectedValue(error429);
         await expect(processText(userText, systemPrompt, apiKey)).rejects.toThrow('Rate limit exceeded or insufficient quota.');
 
-        const error500 = new OpenAI.APIError(500, {}, 'Server Error', {} as any);
+        const error500 = new OpenAI.APIError(500, {}, 'Server Error', undefined);
         mockCreate.mockRejectedValue(error500);
         await expect(processText(userText, systemPrompt, apiKey)).rejects.toThrow('OpenAI service is currently unavailable.');
     });
@@ -151,19 +152,19 @@ describe('OpenAI Library', () => {
     });
 
     it('should handle specific OpenAI API errors in validation', async () => {
-      const error401 = new OpenAI.APIError(401, {}, 'Invalid API Key', {} as any);
+      const error401 = new OpenAI.APIError(401, {}, 'Invalid API Key', undefined);
       mockCreate.mockRejectedValue(error401);
       const result401 = await validateConfiguration(apiKey, DEFAULT_MODEL);
       expect(result401.isValid).toBe(false);
       expect(result401.message).toBe('Invalid API Key.');
 
-      const error404 = new OpenAI.APIError(404, {}, 'Model not found', {} as any);
+      const error404 = new OpenAI.APIError(404, {}, 'Model not found', undefined);
       mockCreate.mockRejectedValue(error404);
       const result404 = await validateConfiguration(apiKey, DEFAULT_MODEL);
       expect(result404.isValid).toBe(false);
       expect(result404.message).toContain(`Model '${DEFAULT_MODEL}' not accessible`);
 
-      const error429 = new OpenAI.APIError(429, {}, 'Rate limit', {} as any);
+      const error429 = new OpenAI.APIError(429, {}, 'Rate limit', undefined);
       mockCreate.mockRejectedValue(error429);
       const result429 = await validateConfiguration(apiKey, DEFAULT_MODEL);
       expect(result429.isValid).toBe(false);
@@ -191,7 +192,7 @@ describe('OpenAI Library', () => {
     });
 
     it('should handle OpenAI errors during transcription', async () => {
-      const error = new OpenAI.APIError(500, {}, 'Server Error', {} as any);
+      const error = new OpenAI.APIError(500, {}, 'Server Error', undefined);
       mockAudioCreate.mockRejectedValue(error);
 
       await expect(transcribeAudio(mockFile, apiKey)).rejects.toThrow('OpenAI Audio Error: Server Error');
