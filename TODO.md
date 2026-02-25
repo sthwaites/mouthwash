@@ -15,10 +15,10 @@
 ## 🚀 DevOps & CI/CD
 
 - [x] **Docker Compose Watch**: Enabled `develop` section for hot-reloading in containers.
-- [ ] **GitHub Actions Pipeline**:
-    - [ ] Build Docker image.
-    - [ ] Push image to **GitHub Container Registry (GHCR)**.
-    - [ ] Tag image with version (semver) and `latest`.
+- [x] **GitHub Actions Pipeline**:
+    - [x] Build Docker image.
+    - [x] Push image to **GitHub Container Registry (GHCR)**.
+    - [x] Tag image with version (semver) and `latest`.
 
 ## 🛠️ Engineering
 
